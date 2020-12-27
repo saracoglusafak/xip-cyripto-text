@@ -6,7 +6,7 @@ $(function () {
     _body.on('keyup keydown click', '#password', function (e) {
         var _this = $(this);
         var _val = _this.val();
-        var _input = $("#input").trigger("click");
+        var _input = $("#input").trigger("change");
 
         if ($.trim(_val))
             _input.removeAttr("disabled");
@@ -16,7 +16,8 @@ $(function () {
     });
 
 
-    _body.on('keyup keydown click', '#input', function (e) {
+    // _body.on('keyup keydown click', '#input', function (e) {
+    _body.on('change', '#input', function (e) {
         var _this = $(this);
         var _val = _this.val();
         var _password = $('#password').val();
@@ -147,8 +148,11 @@ function xipEncode(_val, _password, _repeat) {
         // console.log((_passArray[passIndex].charCodeAt() % 2));
         var _mod = (_passArray[passIndex].charCodeAt() % 2);
 
+        var _add = 0;
+        if (_mod) _add = (100 * _mod);
 
-        _return += (_array[index].charCodeAt() + _passArray[passIndex].charCodeAt() - _passArray[passIndexReverse].charCodeAt() + _passArray.length + _mod);
+
+        _return += ((_array[index].charCodeAt() + _add) + (_passArray[passIndex].charCodeAt()) - (_passArray[passIndexReverse].charCodeAt()) + _passArray.length + (_array.length + _add) + _mod);
 
 
         // console.log(_array[index].charCodeAt());
@@ -205,7 +209,10 @@ function xipDecode(_val, _password, _repeat) {
 
         var _mod = (_passArray[passIndex].charCodeAt() % 2);
 
-        _return += String.fromCharCode(1 * (_array[index] - _passArray[passIndex].charCodeAt() + _passArray[passIndexReverse].charCodeAt() - _passArray.length - _mod));
+        var _add = 0;
+        if (_mod) _add = (100 / _mod);
+
+        _return += String.fromCharCode(1 * ((_array[index] - _add) - (_passArray[passIndex].charCodeAt()) + (_passArray[passIndexReverse].charCodeAt()) - _passArray.length - (_array.length + _add) - _mod));
         // _return += String.fromCharCode(parseInt((_array[index]) - parseInt(_passArray[passIndex])));
 
         // console.log(_passArray[passIndex]);
