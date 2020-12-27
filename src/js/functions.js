@@ -37,9 +37,16 @@ $(function () {
 
 
         // xipEncode(_val);
-        var encode = xipEncode(_val, _password);
-        _output.html(encode);
-        _test.html(xipDecode(encode, _password));
+        // var encode = xipEncode(_val, _password);
+
+        if (_val.match(/^[0-9]+\./g))
+            _output.html(xipDecode(_val, _password));
+        else
+            _output.html(xipEncode(_val, _password));
+
+
+
+        // _test.html(xipDecode(encode, _password));
         // console.log(xipDecode(encode));
 
 
@@ -89,6 +96,12 @@ $(function () {
 
 
 
+    _body.on('click', '#copy', function (e) {
+        copyToClipboard('#output');
+    });
+
+
+
     _body.on('click', 'a[href="#"]', function (e) {
         e.preventDefault();
     });
@@ -97,6 +110,8 @@ $(function () {
 
 
 function xipEncode(_val, _password, _repeat) {
+    _val = $.trim(_val);
+    _password = $.trim(_password);
     if (!_val || !_password) return;
     _repeat = _repeat || ".";
 
@@ -128,7 +143,12 @@ function xipEncode(_val, _password, _repeat) {
 
         // _return += parseInt(_array[index].charCodeAt()) + parseInt(_passArray[passIndex]);
 
-        _return += (_array[index].charCodeAt() + _passArray[passIndex].charCodeAt() + _passArray[passIndexReverse].charCodeAt());
+
+        // console.log((_passArray[passIndex].charCodeAt() % 2));
+        var _mod = (_passArray[passIndex].charCodeAt() % 2);
+
+
+        _return += (_array[index].charCodeAt() + _passArray[passIndex].charCodeAt() - _passArray[passIndexReverse].charCodeAt() + _passArray.length + _mod);
 
 
         // console.log(_array[index].charCodeAt());
@@ -162,6 +182,8 @@ function xipEncode(_val, _password, _repeat) {
 
 
 function xipDecode(_val, _password, _repeat) {
+    _val = $.trim(_val);
+    _password = $.trim(_password);
     if (!_val || !_password) return;
     _repeat = _repeat || ".";
     // console.log(_val.match(/[0-9]+\./g));
@@ -180,7 +202,10 @@ function xipDecode(_val, _password, _repeat) {
         // console.log(_array[index].charCodeAt());
         // console.log(String.fromCharCode(_array[index].charCodeAt()));
         // _return += String.fromCharCode(1 * (_array[index] - _passArray[passIndex]));
-        _return += String.fromCharCode(1 * (_array[index] - _passArray[passIndex].charCodeAt() - _passArray[passIndexReverse].charCodeAt()));
+
+        var _mod = (_passArray[passIndex].charCodeAt() % 2);
+
+        _return += String.fromCharCode(1 * (_array[index] - _passArray[passIndex].charCodeAt() + _passArray[passIndexReverse].charCodeAt() - _passArray.length - _mod));
         // _return += String.fromCharCode(parseInt((_array[index]) - parseInt(_passArray[passIndex])));
 
         // console.log(_passArray[passIndex]);
@@ -191,4 +216,12 @@ function xipDecode(_val, _password, _repeat) {
 
 
     return _return;
+}
+
+function copyToClipboard(element) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val($(element).text()).select();
+    document.execCommand("copy");
+    $temp.remove();
 }
