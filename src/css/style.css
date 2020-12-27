@@ -1,0 +1,54 @@
+#wrapper {
+    width: 80%;
+    margin: 0 auto;
+}
+
+#wrapper * {
+    box-sizing: border-box;
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 200px;
+}
+
+#output {
+    border: 1px solid #ccc;
+    padding: 10px;
+    word-break: break-all;
+    max-height: 30vh;
+    overflow-x: auto;
+}
+
+a {
+    text-decoration: none;
+    color: #f00;
+}
+
+
+.p-relative {
+    position: relative;
+}
+
+.p-absolute {
+    position: absolute;
+}
+
+#show-password {
+    right: 0;
+    line-height: 38px;
+    padding: 0 10px;
+}
+
+#show-password .hide {
+    display: none;
+}
