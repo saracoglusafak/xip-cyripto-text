@@ -120,7 +120,6 @@ function xipEncode(_val, _password, _repeat) {
     var _passArray = _password.split("");
 
 
-
     var _return = "";
     var passIndex = 0;
     var passIndexReverse = (_passArray.length) - 1;
@@ -146,13 +145,34 @@ function xipEncode(_val, _password, _repeat) {
 
 
         // console.log((_passArray[passIndex].charCodeAt() % 2));
-        var _mod = (_passArray[passIndex].charCodeAt() % 2);
+        // var _mod = (_passArray[passIndex].charCodeAt() % 2);
 
-        var _add = 0;
-        if (_mod) _add = (100 * _mod);
+        // var _add = 0;
+        // if (_mod) _add = (100 * _mod);
+
+        var _gen = _array[index].charCodeAt();
 
 
-        _return += ((_array[index].charCodeAt() + _add) + (_passArray[passIndex].charCodeAt()) - (_passArray[passIndexReverse].charCodeAt()) + _passArray.length + (_array.length + _add) + _mod);
+        // _gen += (_gen * 2);
+
+
+        // console.log(_gen % 2);
+        // console.log(_gen);
+        _gen += _passArray[passIndex].charCodeAt();
+        _gen += _passArray[passIndexReverse].charCodeAt();
+        _gen += _passArray.length;
+        _gen += (""+_passArray.length).charCodeAt();
+        _gen += _array.length;
+        _gen += (""+_array.length).charCodeAt();
+
+
+
+
+
+
+        _return += _gen;
+
+        // _return += ((_array[index].charCodeAt() + _add) + (_passArray[passIndex].charCodeAt()) - (_passArray[passIndexReverse].charCodeAt()) + _passArray.length + (_array.length + _add) + _mod);
 
 
         // console.log(_array[index].charCodeAt());
@@ -207,12 +227,31 @@ function xipDecode(_val, _password, _repeat) {
         // console.log(String.fromCharCode(_array[index].charCodeAt()));
         // _return += String.fromCharCode(1 * (_array[index] - _passArray[passIndex]));
 
-        var _mod = (_passArray[passIndex].charCodeAt() % 2);
+        // var _mod = (_passArray[passIndex].charCodeAt() % 2);
 
-        var _add = 0;
-        if (_mod) _add = (100 / _mod);
+        // var _add = 0;
+        // if (_mod) _add = (100 / _mod);
 
-        _return += String.fromCharCode(1 * ((_array[index] - _add) - (_passArray[passIndex].charCodeAt()) + (_passArray[passIndexReverse].charCodeAt()) - _passArray.length - (_array.length + _add) - _mod));
+
+        var _gen = _array[index];
+        // _gen = _array[index];
+        _gen -= _passArray[passIndex].charCodeAt();
+        _gen -= _passArray[passIndexReverse].charCodeAt();
+        _gen -= _passArray.length;
+        _gen -= (""+_passArray.length).charCodeAt();
+        _gen -= _array.length;
+        _gen -= (""+_array.length).charCodeAt();
+
+
+        // _gen = (_gen / 2);
+        // console.log(_gen);
+
+
+
+        _return += String.fromCharCode(_gen);
+
+
+        // _return += String.fromCharCode(1 * ((_array[index] - _add) - (_passArray[passIndex].charCodeAt()) + (_passArray[passIndexReverse].charCodeAt()) - _passArray.length - (_array.length + _add) - _mod));
         // _return += String.fromCharCode(parseInt((_array[index]) - parseInt(_passArray[passIndex])));
 
         // console.log(_passArray[passIndex]);
